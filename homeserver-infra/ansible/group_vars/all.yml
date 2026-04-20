@@ -11,10 +11,10 @@ config_root: /opt/mediaserver/config
 downloads_complete: /media/downloads/complete
 downloads_incomplete: /media/downloads/incomplete
 
-# ── Domain (Cloudflare) ───────────────────────────────────
+# ── (Domain Insert Domain Provider Name) ───────────────────────────────────
 domain: danger-zone-media.us
-cloudflare_api_token: cfat_0ULQYN3kS2ZIFpTVtqqgRsTzYInHd6XM8KnDUUDz1315ff3b
-letsencrypt_email: crgbaumgart@gmail.com
+# cloudflare_api_token: none
+# letsencrypt_email: none
 
 # ── Plex ──────────────────────────────────────────────────
 plex_claim: claim-xxxxxxxxxxxx          # ← from plex.tv/claim
