@@ -1,0 +1,79 @@
+services:
+
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    environment:
+      - PUID={{ puid }}
+      - PGID={{ pgid }}
+      - TZ={{ timezone }}
+    volumes:
+      - {{ config_root }}/sabnzbd:/config
+      - {{ media_root }}/downloads:/downloads
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID={{ puid }}
+      - PGID={{ pgid }}
+      - TZ={{ timezone }}
+    volumes:
+      - {{ config_root }}/prowlarr:/config
+    ports:
+      - "9696:9696"
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID={{ puid }}
+      - PGID={{ pgid }}
+      - TZ={{ timezone }}
+    volumes:
+      - {{ config_root }}/sonarr:/config
+      - {{ media_root }}:/media
+    ports:
+      - "8989:8989"
+    depends_on:
+      - sabnzbd
+      - prowlarr
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID={{ puid }}
+      - PGID={{ pgid }}
+      - TZ={{ timezone }}
+    volumes:
+      - {{ config_root }}/radarr:/config
+      - {{ media_root }}:/media
+    ports:
+      - "7878:7878"
+    depends_on:
+      - sabnzbd
+      - prowlarr
+    restart: unless-stopped
+
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    ports:
+      - "32400:32400"
+    environment:
+      - PUID={{ puid }}
+      - PGID={{ pgid }}
+      - TZ={{ timezone }}
+      - VERSION=docker
+      - PLEX_CLAIM={{ plex_claim }}
+    volumes:
+      - {{ config_root }}/plex:/config
+      - {{ media_root }}/tv:/tv
+      - {{ media_root }}/movies:/movies
+    restart: unless-stopped

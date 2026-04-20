@@ -1,0 +1,10 @@
+---
+- name: Provision Media Server
+  hosts: mediaserver
+  become: true
+  gather_facts: true
+
+  roles:
+    - docker
+    - caddy
+    - mediastack

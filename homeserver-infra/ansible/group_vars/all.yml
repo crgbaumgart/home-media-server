@@ -1,0 +1,21 @@
+# ── Timezone ───────────────────────────────────────────────
+timezone: America/Chicago
+
+# ── User/Group IDs inside containers ──────────────────────
+puid: 1000
+pgid: 1000
+
+# ── Media paths (inside VM) ───────────────────────────────
+media_root: /media
+config_root: /opt/mediaserver/config
+downloads_complete: /media/downloads/complete
+downloads_incomplete: /media/downloads/incomplete
+
+# ── Domain (Cloudflare) ───────────────────────────────────
+domain: danger-zone-media.us
+cloudflare_api_token: cfat_0ULQYN3kS2ZIFpTVtqqgRsTzYInHd6XM8KnDUUDz1315ff3b
+letsencrypt_email: crgbaumgart@gmail.com
+
+# ── Plex ──────────────────────────────────────────────────
+plex_claim: claim-xxxxxxxxxxxx          # ← from plex.tv/claim
+

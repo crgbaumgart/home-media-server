@@ -1,0 +1,32 @@
+{
+    # Tailscale handles TLS — disable Caddy's auto HTTPS
+    auto_https off
+    http_port  2019
+}
+
+http://localhost:2019 {
+
+    handle /sonarr* {
+        reverse_proxy localhost:8989
+    }
+
+    handle /radarr* {
+        reverse_proxy localhost:7878
+    }
+
+    handle /prowlarr* {
+        reverse_proxy localhost:9696
+    }
+
+    handle /sabnzbd* {
+        reverse_proxy localhost:8080
+    }
+
+    handle /plex* {
+        reverse_proxy localhost:32400
+    }
+
+    handle {
+        reverse_proxy localhost:3000
+    }
+}

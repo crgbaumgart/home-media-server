@@ -1,0 +1,43 @@
+# ~/homeserver-infra/Vagrantfile
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "bento/ubuntu-24.04"
+  config.vm.hostname = "mediaserver"
+
+  # Host-only network — stable IP your Mac can always reach
+  config.vm.network "private_network", ip: "192.168.69.101"
+
+  # Bridged network — makes VM visible on your LAN (for Plex discovery)
+  # Change "en0: Wi-Fi" to match your Mac's active interface
+  # Run `VBoxManage list bridgedifs` to find yours
+  config.vm.network "public_network", bridge: "en0: Wi-Fi"
+
+  # Forward media folder from Mac into VM
+  # Change the left side to where your media actually lives
+  config.vm.synced_folder "/Volumes/Seagate\ Hub/Media", "/media",
+    owner: "vagrant", group: "vagrant"
+
+  # VM resources
+  config.vm.provider "virtualbox" do |vb|
+    vb.name   = "mediaserver"
+    vb.memory = 4096
+    vb.cpus   = 4
+  end
+
+  # Port forwards from Mac localhost → VM (for local dev access)
+  config.vm.network "forwarded_port", guest: 443,   host: 8443   # SSL
+  config.vm.network "forwarded_port", guest: 80,    host: 9090   # Regular Web Traffic
+  config.vm.network "forwarded_port", guest: 32400, host: 39400  # Plex
+  config.vm.network "forwarded_port", guest: 8989, host: 38989   # Sonarr
+  config.vm.network "forwarded_port", guest: 7878, host: 37878   # Radarr
+
+  # Provision with Ansible
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook       = "ansible/playbook.yml"
+    ansible.inventory_path = "ansible/inventory.ini"
+    ansible.limit          = "all"
+    ansible.verbose        = "v"
+  end
+
+end
